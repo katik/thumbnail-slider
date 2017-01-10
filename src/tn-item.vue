@@ -4,6 +4,11 @@
 		overflow: hidden;
 		flex:none;
 	}
+
+	.tn-slider-row .tn-item{
+		display: inline-block;
+		height:100%;
+	}
 </style>
 <template>
 	<div class="tn-item" @click='clickHandler()'>

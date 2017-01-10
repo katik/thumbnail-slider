@@ -1,14 +1,21 @@
 
-.tn-prev{
-}
 .tn-slider{
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 }
-
+.tn-prev,.tn-next{
+	flex:none;
+}
+.tn-transform-container{
+	flex:1;
+	overflow: hidden;
+}
+.tn-transform-wrapper{
+	/*get the child offset*/
+	position: relative;
+}
 
 .tn-item{
 	width: 100%;
