@@ -5,6 +5,9 @@
 	display: flex;
 	flex-direction: column;
 }
+.tn-slider-row{
+	flex-direction: row;
+}
 .tn-prev,.tn-next{
 	flex:none;
 }
@@ -13,14 +16,21 @@
 	overflow: hidden;
 }
 .tn-transform-wrapper{
-	/*get the child offset*/
 	position: relative;
 }
+.tn-slider-row .tn-transform-wrapper{
+	white-space: nowrap;
+}
+
 
 .tn-item{
 	width: 100%;
 	overflow: hidden;
 	flex:none;
+}
+.tn-slider-row .tn-item{
+	display: inline-block;
+	height:100%;
 }
 
 /*# sourceMappingURL=thumbnailSlider.css.map*/

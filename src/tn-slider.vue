@@ -10,6 +10,18 @@
 	}
 	.tn-prev,.tn-next{
 		flex:none;
+		width: 100%;
+		height: 37px;
+		background: #f5f5f5;
+		text-align: center;
+	}
+	.tn-prev:after{
+		content: ' ';
+		height: 100%;
+		width: 37px;
+		border:5px solid #e4e4e4;
+		border-left:transparent;
+		border-top:transparent;
 	}
 	.tn-transform-container{
 		flex:1;
@@ -27,13 +39,13 @@
 </style>
 <template>
 	<div class="tn-slider" :class="{'tn-slider-row' : direction=='row'}">
-		<span class="tn-prev" @click='slidePrev()'>上一张</span>
+		<span class="tn-prev" v-if='!hideNav' @click='slidePrev()'>上一张</span>
 		<div class="tn-transform-container">
 			<div class="tn-transform-wrapper">
 				<slot></slot>
 			</div>
 		</div>
-  		<span class="tn-next" @click='slideNext()'>下一张</span>
+  		<span class="tn-next" v-if='!hideNav' @click='slideNext()'>下一张</span>
   	</div>
 </template>
 <script type="text/javascript">
@@ -56,6 +68,10 @@
 			animation: {
 				type: String,
 				default: 'ease'
+			},
+			hideNav: {
+				type: Boolean,
+				default: false
 			}
 		},
 
