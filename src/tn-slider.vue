@@ -128,7 +128,6 @@
 		methods: {
 			clickItem(el) {
 				// this.index = [].slice.call(this.$el.getElementsByClassName("tn-item")).indexOf(el);
-				this.$emit('on-click-item',{index:this.index});
 			},
 			slidePrev() {
 				this._slideBy(this.$transformWrapper[this.directionAtrMap.translate[this.direction]] + this.fullLength);

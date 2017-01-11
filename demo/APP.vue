@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
-             <tn-slider class='wrapper1' direction='column' :index='index' :count='3' @on-click-item='itemClicked'>
-                <tn-item v-for='slide in slides'>
+             <tn-slider class='wrapper1' direction='column' :index='index' :count='3'>
+                <tn-item v-for='(slide,i) in slides' @on-item-click='clickItem(i)'>
                     <img :src="slide.src">
                     <p>销售状态</p>
                 </tn-item>
@@ -71,6 +71,9 @@ export default{
 	methods:{
 		addIndex(){
 			this.index++;
+		},
+		clickItem(i){
+			this.index = i;
 		},
 		itemClicked(e){
 			this.index = e.index;

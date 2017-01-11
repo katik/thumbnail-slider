@@ -35,7 +35,7 @@
 
 		methods:{
 			clickHandler() {
-				this.$parent && this.$parent.clickItem(this.$el);
+				this.$emit('on-item-click',{vm:this});
 			}
 		}
 
