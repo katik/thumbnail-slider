@@ -1,5 +1,4 @@
 require('./transform.js');
-import Vue from 'vue'
 import TnSlider from './tn-slider.vue';
 import TnItem from './tn-item.vue';
 

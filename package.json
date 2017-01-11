@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config ./webpack.config.js",
-    "dev": "webpack-dev-server --config ./webpack.demo.config.js --port 8085   --open --inline --hot"
+    "dev": "webpack-dev-server --config ./webpack.demo.config.js --port 8085   --open --inline --hot --host 0.0.0.0"
   },
   "keywords": [
     "slider",
@@ -29,6 +29,7 @@
     "normalize-url": "^1.8.0",
     "postcss-normalize-url": "^3.0.8",
     "style-loader": "^0.13.1",
+    "vue": "^2.1.8",
     "vue-loader": "^10.0.0",
     "vue-template-compiler": "^2.1.0",
     "webpack": "^2.1.0-beta.25",

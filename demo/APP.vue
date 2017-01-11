@@ -77,7 +77,7 @@ export default{
 		},
 		changeImgs(){
 			this.slides = [
-				            { src: 'http://cdn1.dooioo.com/fetch/vp/yishou/ptgi/960x960/20160715/d8c92614-8ac4-4a55-940c-0faa56d9ccf9.jpg' },
+				{ src: 'http://cdn1.dooioo.com/fetch/vp/yishou/ptgi/960x960/20160715/d8c92614-8ac4-4a55-940c-0faa56d9ccf9.jpg' },
 	            { src: 'http://cdn1.dooioo.com/fetch/vp/yishou/ptgi/960x960/20160715/d8c92614-8ac4-4a55-940c-0faa56d9ccf9.jpg' },
 	            { src: 'http://cdn1.dooioo.com/fetch/vp/yishou/ptgi/960x960/20160715/d8c92614-8ac4-4a55-940c-0faa56d9ccf9.jpg' },
 	            { src: 'http://cdn1.dooioo.com/fetch/vp/yishou/ptgi/300x225/20160715/d39fece6-d715-44df-9450-722f86d4350b.jpg' },

@@ -10,7 +10,7 @@
 	}
 	.tn-prev,.tn-next{
 		flex:none;
-		width: 100%;
+		/*width: 100%;*/
 		height: 37px;
 		background: #f5f5f5;
 		text-align: center;
@@ -104,6 +104,13 @@
 				if($el){
 					this._slideToItem($el);
 				}
+			},
+			fullLength() {
+				let els = this.$el.getElementsByClassName('tn-item');
+				let elLength = this.fullLength/this.count;
+				Array.prototype.map.call(els, (el) => {
+				    this.direction == 'column' ? el.style.height = elLength + 'px' : el.style.width = elLength + 'px';
+				});
 			}
 		},
 
@@ -114,17 +121,13 @@
 			this.$transformWrapper = wrapper;
 			this.fullLength = this.direction == 'column' ? this.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
 							: this.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
-			let els = this.$el.getElementsByClassName('tn-item');
-			let elLength = this.fullLength/this.count;
-			Array.prototype.map.call(els, (el) => {
-			    this.direction == 'column' ? el.style.height = elLength + 'px' : el.style.width = elLength + 'px';
-			});
-			// $(this.$el).find(".tn-item").css('height',this.fullLength/this.count);
+			this._addResizeHandler();
+			
 		},
 
 		methods: {
 			clickItem(el) {
-				this.index = [].slice.call(this.$el.getElementsByClassName("tn-item")).indexOf(el);
+				// this.index = [].slice.call(this.$el.getElementsByClassName("tn-item")).indexOf(el);
 				this.$emit('on-click-item',{index:this.index});
 			},
 			slidePrev() {
@@ -153,6 +156,22 @@
 				}
 				else{
 					new this._animate(this.$transformWrapper,translateAtr,offset,0, null, null);
+				}
+			},
+			_addResizeHandler(){
+				window.addEventListener("resize", resizeThrottler, false);
+				var resizeTimeout;
+				function resizeThrottler() {
+				    if ( !resizeTimeout ) {
+				      resizeTimeout = setTimeout(function() {
+				        resizeTimeout = null;
+				        actualResizeHandler();
+				       }, 66);
+				    }
+				}
+				function actualResizeHandler() {
+	    			this.fullLength = this.direction == 'column' ? this.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
+					: this.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
 				}
 			},
 			_animate(el, property, value, time, ease, onEnd,onChange) {
