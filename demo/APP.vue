@@ -1,10 +1,12 @@
 <template>
 	<div class="wrapper">
-             <tn-slider class='wrapper1' direction='column' :index='index' :count='3'>
+             <tn-slider class='wrapper1' direction='column' :index='index' :count='5'>
+             	<p slot='tn-prev'>上一张</p>
                 <tn-item v-for='(slide,i) in slides' @on-item-click='clickItem(i)'>
                     <img :src="slide.src">
                     <p>销售状态</p>
                 </tn-item>
+                <p slot='tn-next'>下一张</p>
             </tn-slider>
             <button @click='addIndex()'>{{index}}</button>
             <button @click='changeImgs()'>click</button>
@@ -43,12 +45,11 @@
 <script type="text/javascript">
 import TnSlider from '../src/tn-slider.vue';
 import TnItem from '../src/tn-item.vue';
-
 export default{
 	name:'app',
     components: {
         'tn-item': TnItem,
-        'tn-slider': TnSlider
+        'tn-slider': TnSlider,
     },
     data() {
     	return{

@@ -3,6 +3,8 @@
 		width: 100%;
 		overflow: hidden;
 		flex:none;
+		position: relative;
+		box-sizing: border-box;
 	}
 
 	.tn-slider-row .tn-item{
@@ -29,8 +31,8 @@
 			}
 		},
 
-		mounted() {
-
+		updated() {
+			this.$parent && this.$parent.resetSliderPos();
 		},
 
 		methods:{

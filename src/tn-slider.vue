@@ -10,19 +10,8 @@
 	}
 	.tn-prev,.tn-next{
 		flex:none;
-		/*width: 100%;*/
-		height: 37px;
-		background: #f5f5f5;
-		text-align: center;
 	}
-	.tn-prev:after{
-		content: ' ';
-		height: 100%;
-		width: 37px;
-		border:5px solid #e4e4e4;
-		border-left:transparent;
-		border-top:transparent;
-	}
+
 	.tn-transform-container{
 		flex:1;
 		overflow: hidden;
@@ -39,14 +28,18 @@
 </style>
 <template>
 	<div class="tn-slider" :class="{'tn-slider-row' : direction=='row'}">
-		<span class="tn-prev" v-if='!hideNav' @click='slidePrev()'>上一张</span>
+		<div class="tn-prev"  @click='slidePrev()'>
+			<slot name='tn-prev' class='tn-prev'></slot>
+		</div>
 		<div class="tn-transform-container">
 			<div class="tn-transform-wrapper">
 				<slot></slot>
 			</div>
 		</div>
-  		<span class="tn-next" v-if='!hideNav' @click='slideNext()'>下一张</span>
-  	</div>
+		<div class="tn-next"  @click='slideNext()'>
+			<slot name='tn-next'></slot>
+		</div>
+	</div>
 </template>
 <script type="text/javascript">
 	export default {
@@ -94,7 +87,8 @@
 						row:'scrollWidth',
 						column:'clientHeight',
 					}
-				}
+				},
+				ANIMATION_TIME: 500
 			}
 		},
 
@@ -109,92 +103,94 @@
 				let els = this.$el.getElementsByClassName('tn-item');
 				let elLength = this.fullLength/this.count;
 				Array.prototype.map.call(els, (el) => {
-				    this.direction == 'column' ? el.style.height = elLength + 'px' : el.style.width = elLength + 'px';
+					this.direction == 'column' ? el.style.height = elLength + 'px' : el.style.width = elLength + 'px';
 				});
+				this._slideToItem(els[this.index], true);
 			}
 		},
 
 		mounted() {
-			console.log(233);
 			let wrapper = this.$el.getElementsByClassName('tn-transform-wrapper')[0];
+			console.log(wrapper);
 			Transform(wrapper);
 			this.$transformWrapper = wrapper;
-			this.fullLength = this.direction == 'column' ? this.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
-							: this.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
+			setTimeout(()=>{
+				this.fullLength = this.direction == 'column' ? this.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
+					: this.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
+		},0);
 			this._addResizeHandler();
-			
 		},
 
 		methods: {
-			clickItem(el) {
-				// this.index = [].slice.call(this.$el.getElementsByClassName("tn-item")).indexOf(el);
-			},
 			slidePrev() {
 				this._slideBy(this.$transformWrapper[this.directionAtrMap.translate[this.direction]] + this.fullLength);
 			},
 			slideNext() {
 				this._slideBy(this.$transformWrapper[this.directionAtrMap.translate[this.direction]] - this.fullLength);
 			},
+			resetSliderPos(){
+				this.$transformWrapper[this.directionAtrMap.translate[this.direction]] = 0;
+			},
 			_slideToItem(item) {
 				let offset =  .5*this.fullLength - .5*this.fullLength/this.count - item[this.directionAtrMap.offset[this.direction]];
 				this._slideBy(offset);
-				console.log('offset', offset);
 			},
-			_slideBy(offset) {
+			_slideBy(offset, noAnimating) {
 				let size = this.$el.getElementsByClassName('tn-transform-wrapper')[0][this.directionAtrMap.size[this.direction]];
 				let translateAtr = this.directionAtrMap.translate[this.direction];
-				if(offset >= 0){
+				if(offset >= 0 || this.fullLength > size){
 					offset = 0;
 				}
 				if(offset < 0 && offset <= this.fullLength - size)
 				{
 					offset =  this.fullLength - size;
 				}
-				if(this.animation == 'ease'){
-					new this._animate(this.$transformWrapper,translateAtr,offset,500, this._ease, null);
+				if(this.animation == 'ease' && !noAnimating){
+					this._animate(this.$transformWrapper,translateAtr,offset,this.ANIMATION_TIME, this._ease, null);
 				}
 				else{
-					new this._animate(this.$transformWrapper,translateAtr,offset,0, null, null);
+					this.$transformWrapper[translateAtr] = offset;
 				}
 			},
 			_addResizeHandler(){
-				window.addEventListener("resize", resizeThrottler, false);
-				var resizeTimeout;
+				let resizeTimeout;
+				let self = this;
 				function resizeThrottler() {
-				    if ( !resizeTimeout ) {
-				      resizeTimeout = setTimeout(function() {
-				        resizeTimeout = null;
-				        actualResizeHandler();
-				       }, 66);
-				    }
+					if ( !resizeTimeout ) {
+						resizeTimeout = setTimeout(function() {
+							resizeTimeout = null;
+							actualResizeHandler();
+						}, 66);
+					}
 				}
 				function actualResizeHandler() {
-	    			this.fullLength = this.direction == 'column' ? this.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
-					: this.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
+					self.fullLength = self.direction == 'column' ? self.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
+							: self.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
 				}
+				window.addEventListener("resize", resizeThrottler, false);
 			},
 			_animate(el, property, value, time, ease, onEnd,onChange) {
-			    var current = el[property];
-			    var dv = value - current;
-			    var beginTime = new Date();
-			    var self = this;
-			    var currentEase=ease||function(a){return a };
-			    this.tickID=null;
-			    var toTick = function () {
-			        var dt = new Date() - beginTime;
-			        if (dt >= time) {
-			            el[property] = value;
-			            onChange && onChange(value);
-			            onEnd && onEnd(value);
-			            cancelAnimationFrame(self.tickID);
-			            self.toTick=null;
-			            return;
-			        }
-			        el[property] = dv * currentEase(dt / time) + current;
-			        self.tickID=requestAnimationFrame(toTick);
-			        onChange && onChange(el[property]);
-			    };
-			    toTick();
+				var current = el[property];
+				var dv = value - current;
+				var beginTime = new Date();
+				var self = this;
+				var currentEase=ease||function(a){return a };
+				this.tickID=null;
+				var toTick = function () {
+					var dt = new Date() - beginTime;
+					if (dt >= time) {
+						el[property] = value;
+						onChange && onChange(value);
+						onEnd && onEnd(value);
+						cancelAnimationFrame(self.tickID);
+						self.toTick=null;
+						return;
+					}
+					el[property] = dv * currentEase(dt / time) + current;
+					self.tickID=requestAnimationFrame(toTick);
+					onChange && onChange(el[property]);
+				};
+				toTick();
 			},
 			_ease(x) {
 				return Math.sqrt(1 - Math.pow(x - 1, 2));
