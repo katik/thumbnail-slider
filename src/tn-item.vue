@@ -31,10 +31,6 @@
 			}
 		},
 
-		updated() {
-			this.$parent && this.$parent.resetSliderPos();
-		},
-
 		methods:{
 			clickHandler() {
 				this.$emit('on-item-click',{vm:this});

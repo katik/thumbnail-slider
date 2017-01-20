@@ -7,9 +7,6 @@ module.exports = {
         'demo': './demo/demo.js'
     },
     output: {
-        library: 'ThumbnailSlider',
-        libraryTarget: 'umd',
-        path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
         filename: '[name].min.js'
     },
@@ -39,5 +36,5 @@ module.exports = {
         }, ]
     },
     devtool: 'cheap-source-map',
-    plugins: [new ExtractTextPlugin('thumbnailSlider.css')],
+    plugins: [new ExtractTextPlugin('demo.css')],
 };

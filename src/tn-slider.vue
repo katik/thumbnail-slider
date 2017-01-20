@@ -42,6 +42,7 @@
 	</div>
 </template>
 <script type="text/javascript">
+	import './transform.js';
 	export default {
 		name: 'tn-slider',
 
@@ -62,9 +63,9 @@
 				type: String,
 				default: 'ease'
 			},
-			hideNav: {
-				type: Boolean,
-				default: false
+			animationTime: {
+				type: Number,
+				default: 400
 			}
 		},
 
@@ -84,11 +85,14 @@
 						column:'offsetTop',
 					},
 					size:{
-						row:'scrollWidth',
+						row:'clientWidth',
 						column:'clientHeight',
+					},
+					scrollSize:{
+						row:'scrollWidth',
+						column:'scrollHeight'
 					}
-				},
-				ANIMATION_TIME: 500
+				}
 			}
 		},
 
@@ -100,24 +104,17 @@
 				}
 			},
 			fullLength() {
-				let els = this.$el.getElementsByClassName('tn-item');
-				let elLength = this.fullLength/this.count;
-				Array.prototype.map.call(els, (el) => {
-					this.direction == 'column' ? el.style.height = elLength + 'px' : el.style.width = elLength + 'px';
-				});
-				this._slideToItem(els[this.index], true);
+				this.resize();
 			}
 		},
 
 		mounted() {
 			let wrapper = this.$el.getElementsByClassName('tn-transform-wrapper')[0];
-			console.log(wrapper);
 			Transform(wrapper);
 			this.$transformWrapper = wrapper;
-			setTimeout(()=>{
-				this.fullLength = this.direction == 'column' ? this.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
-					: this.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
-		},0);
+			setTimeout(() => {
+				this.fullLength = this.$el.getElementsByClassName('tn-transform-container')[0][this.directionAtrMap.size[this.direction]];
+			},50);
 			this._addResizeHandler();
 		},
 
@@ -131,12 +128,21 @@
 			resetSliderPos(){
 				this.$transformWrapper[this.directionAtrMap.translate[this.direction]] = 0;
 			},
-			_slideToItem(item) {
+			resize(){
+				this.fullLength = this.$el.getElementsByClassName('tn-transform-container')[0][this.directionAtrMap.size[this.direction]];
+				let els = this.$el.getElementsByClassName('tn-item');
+				let elLength = this.fullLength/this.count;
+				Array.prototype.map.call(els, (el) => {
+					this.direction == 'column' ? el.style.height = elLength + 'px' : el.style.width = elLength + 'px';
+				});
+				this._slideToItem(els[this.index], true);
+			},
+			_slideToItem(item, noAnimating) {
 				let offset =  .5*this.fullLength - .5*this.fullLength/this.count - item[this.directionAtrMap.offset[this.direction]];
-				this._slideBy(offset);
+				this._slideBy(offset, noAnimating);
 			},
 			_slideBy(offset, noAnimating) {
-				let size = this.$el.getElementsByClassName('tn-transform-wrapper')[0][this.directionAtrMap.size[this.direction]];
+				let size = this.$el.getElementsByClassName('tn-transform-wrapper')[0][this.directionAtrMap.scrollSize[this.direction]];
 				let translateAtr = this.directionAtrMap.translate[this.direction];
 				if(offset >= 0 || this.fullLength > size){
 					offset = 0;
@@ -146,7 +152,7 @@
 					offset =  this.fullLength - size;
 				}
 				if(this.animation == 'ease' && !noAnimating){
-					this._animate(this.$transformWrapper,translateAtr,offset,this.ANIMATION_TIME, this._ease, null);
+					this._animate(this.$transformWrapper,translateAtr,offset,this.animationTime, this._ease, null);
 				}
 				else{
 					this.$transformWrapper[translateAtr] = offset;
@@ -159,15 +165,11 @@
 					if ( !resizeTimeout ) {
 						resizeTimeout = setTimeout(function() {
 							resizeTimeout = null;
-							actualResizeHandler();
-						}, 66);
+							self.resize();
+						}, 16);
 					}
 				}
-				function actualResizeHandler() {
-					self.fullLength = self.direction == 'column' ? self.$el.getElementsByClassName('tn-transform-container')[0].clientHeight
-							: self.$el.getElementsByClassName('tn-transform-container')[0].clientWidth;
-				}
-				window.addEventListener("resize", resizeThrottler, false);
+				window.addEventListener("resize", self.resize, false);
 			},
 			_animate(el, property, value, time, ease, onEnd,onChange) {
 				var current = el[property];

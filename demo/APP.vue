@@ -1,41 +1,59 @@
+
 <template>
 	<div class="wrapper">
-             <tn-slider class='wrapper1' direction='column' :index='index' :count='5'>
-             	<p slot='tn-prev'>上一张</p>
-                <tn-item v-for='(slide,i) in slides' @on-item-click='clickItem(i)'>
-                    <img :src="slide.src">
-                    <p>销售状态</p>
-                </tn-item>
-                <p slot='tn-next'>下一张</p>
-            </tn-slider>
-            <button @click='addIndex()'>{{index}}</button>
-            <button @click='changeImgs()'>click</button>
+			<div class="wrapper0">
+				<p>demo1:</p>
+				<p>direction:column; count:5</p>
+				 <tn-slider class='wrapper1' direction='column' :index='index' :count='5'>
+	             	<p slot='tn-prev'>prev</p>
+	                <tn-item v-for='(slide,i) in slides' @on-item-click='clickItem(i)'>
+	                	<div class="huxing-wrapper">
+	                		<img :src="slide.src">
+	                    	<p>notes blabla...</p>
+	                	</div>
+	                </tn-item>
+	                <p slot='tn-next'>next</p>
+	            </tn-slider>
+	            <button @click='addIndex()'>Index: {{index}}</button>
+	            <button @click='changeImgs()'>change slides</button>
+			</div>
 
 			<div class="wrapper2">
+				<p>demo2:</p>
+				<p>direction:column; count:1; animation:none</p>
 		    	<tn-slider direction='column' :index='index' :count='1' animation='none' :hide-nav='true'>
 		                <tn-item v-for='slide in slides'>
 		                    <img :src="slide.src">
-		                    <p>销售状态</p>
 		                </tn-item>
 		        </tn-slider>
 		    </div> 
 
 			<div class="row2">
-			    <tn-slider class='wrapper3' :index='index' :count='10' @on-click-item='itemClicked'>
-	                <tn-item v-for='slide in slides'>
-	                    <img :src="slide.src">
-	                    <p>销售状态</p>
-	                </tn-item>
-	            </tn-slider>
-	            <button @click='addIndex()'>{{index}}</button>
-	            <button @click='changeImgs()'>click</button>
-
 				<div class="wrapper4">
+				<p>demo3:</p>
+				<p>direction:row; count:6; animation:ease</p>
+					<tn-slider class='wrapper3' :index='index' :count='6'>
+		                <p slot='tn-prev'>prev</p>
+		                <tn-item v-for='(slide,i) in slides' @on-item-click='clickItem(i)'>
+		                    <img :src="slide.src">
+		                    <p>notes: blabla</p>
+		                </tn-item>
+		                <p slot='tn-next'>next</p>
+		            </tn-slider>
+		            <button @click='addIndex()'>Index: {{index}}</button>
+	            	<button @click='changeImgs()'>change slides</button>
+				</div>
+			    
+				<div class="wrapper5">
+					<p>demo4:</p>
+					<p>direction:row; count:1; animation:ease</p>
 			    	<tn-slider :index='index' :count='1' :hideNav='true'>
+			    			<p slot='tn-prev'>prev</p>
 			                <tn-item v-for='slide in slides'>
 			                    <img :src="slide.src">
-			                    <p>销售状态</p>
+			                    <p>notes: blabla</p>
 			                </tn-item>
+			                <p slot='tn-next'>next</p>
 			        </tn-slider>
 			    </div>
 			</div>
@@ -94,6 +112,4 @@ export default{
 };
 </script>
 
-<style type="text/css">
-	
-</style>
+
