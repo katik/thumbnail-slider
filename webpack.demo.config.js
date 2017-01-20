@@ -8,6 +8,7 @@ module.exports = {
     },
     output: {
         publicPath: '/dist/',
+        path: path.resolve(__dirname, './dist'),
         filename: '[name].min.js'
     },
     module: {

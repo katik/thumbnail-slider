@@ -1,11 +1,12 @@
 {
   "name": "thumbnail-slider",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "a vue based slider, thumbnail-view like",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config ./webpack.config.js",
+    "demo": "webpack --config ./webpack.demo.config.js",
     "dev": "webpack-dev-server --config ./webpack.demo.config.js --port 8085   --open --inline --hot --host 0.0.0.0"
   },
   "keywords": [

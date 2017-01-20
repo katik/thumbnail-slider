@@ -1,0 +1,38 @@
+
+.tn-slider{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.tn-slider-row{
+	flex-direction: row;
+}
+.tn-prev,.tn-next{
+	flex:none;
+}
+.tn-transform-container{
+	flex:1;
+	overflow: hidden;
+}
+.tn-transform-wrapper{
+	position: relative;
+}
+.tn-slider-row .tn-transform-wrapper{
+	white-space: nowrap;
+}
+
+
+.tn-item{
+	width: 100%;
+	overflow: hidden;
+	flex:none;
+	position: relative;
+	box-sizing: border-box;
+}
+.tn-slider-row .tn-item{
+	display: inline-block;
+	height:100%;
+}
+
+/*# sourceMappingURL=demo.css.map*/
