@@ -92,7 +92,11 @@
 						row:'scrollWidth',
 						column:'scrollHeight'
 					}
-				}
+				},
+				translateAtr:null,
+				offsetAtr:null,
+				sizeAtr:null,
+				scrollSizeAtr:null
 			}
 		},
 
@@ -109,27 +113,36 @@
 		},
 
 		mounted() {
+			//row or colum
+			this._initDirectionAtr();
+
 			let wrapper = this.$el.getElementsByClassName('tn-transform-wrapper')[0];
 			Transform(wrapper);
 			this.$transformWrapper = wrapper;
 			setTimeout(() => {
-				this.fullLength = this.$el.getElementsByClassName('tn-transform-container')[0][this.directionAtrMap.size[this.direction]];
+				this.fullLength = this.$el.getElementsByClassName('tn-transform-container')[0][this.sizeAtr];
 			},50);
 			this._addResizeHandler();
 		},
 
 		methods: {
+			_initDirectionAtr() {
+				this.translateAtr = this.directionAtrMap.translate[this.direction];
+				this.offsetAtr = this.directionAtrMap.offset[this.direction];
+				this.sizeAtr = this.directionAtrMap.size[this.direction];
+				this.scrollSizeAtr = this.directionAtrMap.scrollSize[this.direction];
+			},
 			slidePrev() {
-				this._slideBy(this.$transformWrapper[this.directionAtrMap.translate[this.direction]] + this.fullLength);
+				this._slideBy(this.$transformWrapper[this.translateAtr] + this.fullLength);
 			},
 			slideNext() {
-				this._slideBy(this.$transformWrapper[this.directionAtrMap.translate[this.direction]] - this.fullLength);
+				this._slideBy(this.$transformWrapper[this.translateAtr] - this.fullLength);
 			},
 			resetSliderPos(){
-				this.$transformWrapper[this.directionAtrMap.translate[this.direction]] = 0;
+				this.$transformWrapper[this.translateAtr] = 0;
 			},
 			resize(){
-				this.fullLength = this.$el.getElementsByClassName('tn-transform-container')[0][this.directionAtrMap.size[this.direction]];
+				this.fullLength = this.$el.getElementsByClassName('tn-transform-container')[0][this.sizeAtr];
 				let els = this.$el.getElementsByClassName('tn-item');
 				let elLength = this.fullLength/this.count;
 				Array.prototype.map.call(els, (el) => {
@@ -138,12 +151,12 @@
 				this._slideToItem(els[this.index], true);
 			},
 			_slideToItem(item, noAnimating) {
-				let offset =  .5*this.fullLength - .5*this.fullLength/this.count - item[this.directionAtrMap.offset[this.direction]];
+				let offset =  .5*this.fullLength - .5*this.fullLength/this.count - item[this.offsetAtr];
 				this._slideBy(offset, noAnimating);
 			},
 			_slideBy(offset, noAnimating) {
-				let size = this.$el.getElementsByClassName('tn-transform-wrapper')[0][this.directionAtrMap.scrollSize[this.direction]];
-				let translateAtr = this.directionAtrMap.translate[this.direction];
+				let size = this.$el.getElementsByClassName('tn-transform-wrapper')[0][this.scrollSizeAtr];
+				let translateAtr = this.translateAtr;
 				if(offset >= 0 || this.fullLength > size){
 					offset = 0;
 				}
