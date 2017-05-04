@@ -1,6 +1,6 @@
 {
   "name": "thumbnail-slider",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "a vue based slider, thumbnail-view like",
   "main": "dist/thumbnailSlider.min.js",
   "scripts": {
