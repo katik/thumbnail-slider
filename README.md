@@ -15,10 +15,10 @@ Import components to your project:
 require('thumbnail-slider/dist/thumbnailSlider.css');
 
 // in ES6 modules
-import { TnSlider, TnItem } from 'ThumbnailSlider';
+import { TnSlider, TnItem } from 'thumbnail-slider';
 
 // in CommonJS
-const { TnSlider, TnItem } = require('ThumbnailSlider');
+const { TnSlider, TnItem } = require('thumbnail-slider');
 
 // in Global variable
 const { TnSlider, TnItem } = ThumbnailSlider;
@@ -39,7 +39,7 @@ Vue.component('tn-item', TnItem);
 ```
 
 ```JavaScript
-import { TnSlider, TnItem } from 'ThumbnailSlider';
+import { TnSlider, TnItem } from 'thumbnail-slider';
 
 export default{
   name:'app',

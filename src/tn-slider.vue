@@ -109,6 +109,9 @@
 			},
 			fullLength() {
 				this.resize();
+			},
+			animation() {
+				console.log('d');
 			}
 		},
 
